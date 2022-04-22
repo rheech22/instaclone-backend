@@ -5,6 +5,8 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-co
 
 import schema from "./schema";
 
+import { getUser } from "./users/users.utils";
+
 // 대충 순서
 // 스키마를 작성하고 migrate하는 작업
 // 스카마에 따라 typeDefs를 정의해주는 작업
@@ -12,6 +14,11 @@ import schema from "./schema";
 
 const server = new ApolloServer({
   schema,
+  context: async ({ req }) => {
+    return {
+      loggedInUser: await getUser(req.headers.token)
+    }
+  },
   plugins: [
     ApolloServerPluginLandingPageGraphQLPlayground(),
   ],
