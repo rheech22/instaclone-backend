@@ -5,7 +5,7 @@ import { protectedResolver } from '../users.utils';
 
 const resolvers: Resolvers = {
   Mutation: {
-    login: protectedResolver(async(_, {
+    login: async(_, {
       username,
       password
     }, {client}) => {
@@ -48,7 +48,7 @@ const resolvers: Resolvers = {
         ok: true,
         token,
       }
-    })
+    }
   },
 };
 

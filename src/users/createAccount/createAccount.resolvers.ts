@@ -6,7 +6,7 @@ import { protectedResolver } from '../users.utils';
 
 const resolvers: Resolvers = {
   Mutation: {
-    createAccount: protectedResolver(
+    createAccount: 
       async (
         _, 
         {
@@ -53,7 +53,7 @@ const resolvers: Resolvers = {
      } catch(e) {
       return e;
      }
-    })
+    }
   },
 };
 

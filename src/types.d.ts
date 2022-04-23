@@ -1,4 +1,5 @@
 import { PrismaClient, User } from "@prisma/client";
+import { GraphQLScalarType } from "graphql";
 
 type Context = {
   loggedInUser?: User;
@@ -14,6 +15,10 @@ export type Resolver = (
 
 export type Resolvers = {
   [key: string]: {
-    [key: string]: Resolver
-  }
+    [key: string]: Resolver,
+  };
+}
+
+export type Scalars = {
+  Upload: GraphQLScalarType
 }
