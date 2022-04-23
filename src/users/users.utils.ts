@@ -1,14 +1,14 @@
-import jwt from 'jsonwebtoken';
+import { JwtPayload, verify } from 'jsonwebtoken';
 
 import client from '../client';
 
-export const getUser = async( token ) => {
+export const getUser = async( token: string ) => {
   try {
     if(!token) {
       return null
     };
 
-    const { id } = await jwt.verify(token, process.env.SECRET_KEY);
+    const { id } = await verify(token, process.env.SECRET_KEY!) as JwtPayload;
 
     const user = await client.user.findUnique({
       where: {
@@ -26,7 +26,7 @@ export const getUser = async( token ) => {
   }
 }
 
-export const protectedResolver = (resolver) => (root, args, context, info) => {
+export const protectedResolver = (resolver: any) => (root: any, args: any, context: any, info: any) => {
   if(!context.loggedInUser) {
     return {
       ok: false,

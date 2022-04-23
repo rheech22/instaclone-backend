@@ -1,17 +1,17 @@
-import bcrypt from 'bcrypt';
+import { hash } from 'bcrypt';
 
 import client from "../../client";
 
 
 export default {
   Mutation: {
-    createAccount: async (_, {
+    createAccount: async (_: any, {
       firstName,
       lastName,
       username,
       email,
       password,
-    }) => {
+    }: any) => {
      try{
       // 1. check if username or email are already on DB
       const existingUser = await client.user.findFirst({
@@ -31,7 +31,7 @@ export default {
         throw new Error('already existed username/email');
       };
       // 2. hash password
-      const uglyPassword = await bcrypt.hash(password, 10);
+      const uglyPassword = await hash(password, 10);
       // 3. save and return the user
       return client.user.create({
         data: {
