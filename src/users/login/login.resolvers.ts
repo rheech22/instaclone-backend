@@ -1,15 +1,14 @@
 import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import { Resolvers } from '../../types';
+import { protectedResolver } from '../users.utils';
 
-import client from '../../client';
-
-
-export default {
+const resolvers: Resolvers = {
   Mutation: {
-    login: async(_: any, {
+    login: protectedResolver(async(_, {
       username,
       password
-    }: any) => {
+    }, {client}) => {
       // find user with args.username
       const user = await client.user.findFirst({
         where: {
@@ -49,6 +48,8 @@ export default {
         ok: true,
         token,
       }
-    }
+    })
   },
 };
+
+export default resolvers;

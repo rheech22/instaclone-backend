@@ -1,18 +1,24 @@
 import { hash } from 'bcrypt';
 
-import client from "../../client";
+import { Resolvers } from '../../types';
+import { protectedResolver } from '../users.utils';
 
 
-export default {
+const resolvers: Resolvers = {
   Mutation: {
-    createAccount: async (_: any, {
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-    }: any) => {
-     try{
+    createAccount: protectedResolver(
+      async (
+        _, 
+        {
+          firstName,
+          lastName,
+          username,
+          email,
+          password,
+        }, 
+        { client }
+      ) => {
+     try {
       // 1. check if username or email are already on DB
       const existingUser = await client.user.findFirst({
         where: {
@@ -30,8 +36,10 @@ export default {
       if (existingUser) {
         throw new Error('already existed username/email');
       };
+
       // 2. hash password
       const uglyPassword = await hash(password, 10);
+      
       // 3. save and return the user
       return client.user.create({
         data: {
@@ -45,6 +53,8 @@ export default {
      } catch(e) {
       return e;
      }
-    }
+    })
   },
 };
+
+export default resolvers;

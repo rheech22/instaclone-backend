@@ -1,25 +1,26 @@
 import { hash } from "bcrypt";
 
-import client from '../../client';
+import { Resolvers } from "../../types";
 import { protectedResolver } from "../users.utils";
 
 
 // curried func: protectedResolver(resolver)(root, args, context, info)
 
-export default {
+const resolvers: Resolvers = {
   Mutation: {
-    editProfile: protectedResolver( async (
-      _: any, 
+    editProfile: protectedResolver( 
+      async (_, 
       {
         firstName,
         lastName,
         username,
         email,
         password: newPassword,
-      }: any,
+      },
       {
-        loggedInUser
-      }: any
+        loggedInUser,
+        client
+      }
     ) => {
       let uglyPassword = null;
 
@@ -29,7 +30,7 @@ export default {
 
       const updatedUser = await client.user.update({
         where: {
-          id: loggedInUser.id
+          id: loggedInUser?.id
         },
         data: {
           firstName,
@@ -53,3 +54,5 @@ export default {
     })
   }
 }
+
+export default resolvers;

@@ -1,15 +1,18 @@
-import client from "../../client";
-
+import { Resolvers } from "../../types";
+import { protectedResolver } from "../users.utils";
 
 // findFirst vs findUnique
 // findUnique는 유니크한 field만 찾음
 
-export default {
+const resolvers: Resolvers = {
   Query: {
-    seeProfile: (_: any, {username}: any) => client.user.findUnique({
-      where: {
-        username,
-      }
-    })
+    seeProfile: protectedResolver((_, { username }, { client }) =>
+      client.user.findUnique({
+        where: {
+          username,
+        },
+      }))
   },
 };
+
+export default resolvers

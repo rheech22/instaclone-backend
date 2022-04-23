@@ -2,6 +2,7 @@ require('dotenv').config();
 
 import { ApolloServer } from "apollo-server";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import client from "./client";
 
 import schema from "./schema";
 
@@ -16,7 +17,8 @@ const server = new ApolloServer({
   schema,
   context: async ({ req }) => {
     return {
-      loggedInUser: await getUser(req.headers.token)
+      loggedInUser: await getUser(req.headers.token),
+      client,
     }
   },
   plugins: [
