@@ -53,23 +53,3 @@ async function startServer() {
 }
 
 startServer();
-
-// const server = new ApolloServer({
-//   resolvers,
-//   typeDefs,
-  // context: async ({ req }) => {
-  //   return {
-  //     loggedInUser: await getUser(req.headers.token),
-  //     client,
-  //   }
-  // },
-  // plugins: [
-  //   ApolloServerPluginLandingPageGraphQLPlayground(),
-  // ],
-// });
-
-
-
-// server
-//   .listen()
-//   .then(()=> console.log(`Server is running - http://localhost:${PORT}`))
